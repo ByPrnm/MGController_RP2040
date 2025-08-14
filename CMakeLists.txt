@@ -36,9 +36,6 @@ pico_sdk_init()
 # Tambahkan direktori 'lib' ke path include
 include_directories(lib)
 
-# Proses file .pio dan hasilkan file header C
-pico_generate_pio_header(${CMAKE_PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/signal_generator.pio)
-
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(${CMAKE_PROJECT_NAME}
@@ -49,19 +46,22 @@ add_executable(${CMAKE_PROJECT_NAME}
 pico_set_program_name(${CMAKE_PROJECT_NAME} "MGController_RP2040")
 pico_set_program_version(${CMAKE_PROJECT_NAME} "0.1")
 
+# Proses file .pio dan hasilkan file header C
+pico_generate_pio_header(${CMAKE_PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/signal_generator.pio)
+
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_usb(${CMAKE_PROJECT_NAME} 1)
 pico_enable_stdio_uart(${CMAKE_PROJECT_NAME} 0)
 
 # Add the standard library to the build
 target_link_libraries(${CMAKE_PROJECT_NAME}
-    pico_stdlib
-    hardware_i2c
-    hardware_flash
-    hardware_sync
-    hardware_pio
-    hardware_clocks
-    hardware_dma
+    pico_stdlib           # Fungsi dasar (stdio, gpio, etc.)
+    hardware_pio          # Fungsi untuk berinteraksi dengan PIO
+    hardware_clocks       # Fungsi clock system
+    hardware_i2c          # Fungsi I2C untuk LCD
+    hardware_flash        # Fungsi untuk penyimpanan flash
+    hardware_sync         # Fungsi sinkronisasi dan interrupt
+    hardware_timer        # Fungsi alarm/timer
 )
 
 # Add the standard include files to the build
