@@ -1,0 +1,35 @@
+;-------------------------------------------------------------------------
+; Program PIO untuk Generator Sinyal 4-Kanal
+;-------------------------------------------------------------------------
+
+.program signal_generator
+
+.wrap_target
+    ; Event A: CH1/CH4 HIGH (Nilai: 1001b = 9)
+    pull block
+    mov x, osr
+    set pins, 9
+loop_A:
+    jmp x-- loop_A
+
+    ; Event B: Dead Time - Semua LOW (Nilai: 0000b = 0)
+    pull block
+    mov x, osr
+    set pins, 0
+loop_B:
+    jmp x-- loop_B
+
+    ; Event C: CH2/CH3 HIGH (Nilai: 0110b = 6)
+    pull block
+    mov x, osr
+    set pins, 6
+loop_C:
+    jmp x-- loop_C
+
+    ; Event D: Sisa Periode - Semua LOW (Nilai: 0000b = 0)
+    pull block
+    mov x, osr
+    set pins, 0
+loop_D:
+    jmp x-- loop_D
+.wrap
